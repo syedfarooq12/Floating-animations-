@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Starfield Background</title>
+  <title>Golden Starfield</title>
 
   <style>
     /* Reset */
@@ -17,8 +17,6 @@
       background: #000000;
       overflow: hidden;
       min-height: 100vh;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      color: white;
     }
 
     /* Starfield container */
@@ -33,16 +31,19 @@
     /* Star style */
     .star {
       position: absolute;
-      background: #ffffff;
+      background: radial-gradient(circle, #ffd700 40%, #ffb700 70%, transparent 100%);
       border-radius: 50%;
-      box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+      box-shadow:
+        0 0 6px rgba(255, 215, 0, 0.9),
+        0 0 12px rgba(255, 183, 0, 0.7),
+        0 0 18px rgba(255, 215, 0, 0.4);
       animation-name: float;
       animation-timing-function: ease-in-out;
       animation-iteration-count: infinite;
       will-change: transform;
     }
 
-    /* Floating jitter animation */
+    /* Faster floating animation */
     @keyframes float {
       0% {
         transform: translate(0, 0);
@@ -54,22 +55,6 @@
         transform: translate(0, 0);
       }
     }
-
-    /* Demo content (optional – remove if needed) */
-    .content {
-      position: relative;
-      z-index: 1;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-
-    .content h1 {
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      letter-spacing: 1px;
-    }
   </style>
 </head>
 <body>
@@ -77,40 +62,35 @@
   <!-- Starfield -->
   <div id="starfield"></div>
 
-  <!-- Optional content -->
-  <div class="content">
-    <h1>Starfield Background</h1>
-  </div>
-
   <script>
     const starfield = document.getElementById("starfield");
 
-    // Mobile-friendly star count
-    const starCount = Math.floor(Math.random() * 50) + 100; // 100–150
+    // 100–150 stars
+    const starCount = Math.floor(Math.random() * 50) + 100;
 
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement("div");
       star.className = "star";
 
-      // Position (uniform distribution)
+      // Uniform placement
       star.style.left = Math.random() * 100 + "%";
       star.style.top = Math.random() * 100 + "%";
 
-      // Size variation (depth illusion)
-      const size = Math.random() * 1.5 + 1;
+      // Larger star size
+      const size = Math.random() * 2.5 + 2.5; // 2.5px – 5px
       star.style.width = size + "px";
       star.style.height = size + "px";
 
-      // Floating movement (2–5px)
-      const xMove = (Math.random() * 3 + 2) * (Math.random() < 0.5 ? -1 : 1);
-      const yMove = (Math.random() * 3 + 2) * (Math.random() < 0.5 ? -1 : 1);
+      // Increased movement range
+      const xMove = (Math.random() * 4 + 4) * (Math.random() < 0.5 ? -1 : 1);
+      const yMove = (Math.random() * 4 + 4) * (Math.random() < 0.5 ? -1 : 1);
 
       star.style.setProperty("--x-move", xMove + "px");
       star.style.setProperty("--y-move", yMove + "px");
 
-      // Animation timing (desynced)
-      star.style.animationDuration = Math.random() * 6 + 6 + "s"; // 6–12s
-      star.style.animationDelay = Math.random() * 10 + "s";
+      // Faster animation speed
+      star.style.animationDuration = Math.random() * 3 + 3 + "s"; // 3–6s
+      star.style.animationDelay = Math.random() * 5 + "s";
 
       starfield.appendChild(star);
     }
