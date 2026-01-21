@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Golden Bronze Starfield</title>
+  <title>Golden Grid Float</title>
 
   <style>
-    /* Reset */
     * {
       margin: 0;
       padding: 0;
@@ -19,16 +18,15 @@
       min-height: 100vh;
     }
 
-    /* Starfield container */
+    /* Container */
     #starfield {
       position: fixed;
       inset: 0;
       background: #000000;
       z-index: -1;
-      overflow: hidden;
     }
 
-    /* Star style */
+    /* Dot style */
     .star {
       position: absolute;
       border-radius: 50%;
@@ -40,65 +38,68 @@
         transparent 100%
       );
       box-shadow:
-        0 0 6px rgba(201, 162, 39, 0.9),
-        0 0 14px rgba(201, 162, 39, 0.7),
-        0 0 22px rgba(158, 124, 25, 0.5);
-      animation-name: float;
-      animation-timing-function: ease-in-out;
+        0 0 6px rgba(201, 162, 39, 0.8),
+        0 0 14px rgba(201, 162, 39, 0.6);
+      animation-timing-function: linear;
       animation-iteration-count: infinite;
       will-change: transform;
     }
 
-    /* Faster floating animation */
-    @keyframes float {
-      0% {
-        transform: translate(0, 0);
-      }
-      50% {
-        transform: translate(var(--x-move), var(--y-move));
-      }
-      100% {
-        transform: translate(0, 0);
-      }
+    /* Downward motion */
+    @keyframes moveDown {
+      from { transform: translateY(-12px); }
+      to   { transform: translateY(12px); }
+    }
+
+    /* Upward motion */
+    @keyframes moveUp {
+      from { transform: translateY(12px); }
+      to   { transform: translateY(-12px); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Starfield -->
   <div id="starfield"></div>
 
   <script>
-    const starfield = document.getElementById("starfield");
+    const container = document.getElementById("starfield");
 
-    // 100–150 stars
-    const starCount = Math.floor(Math.random() * 50) + 100;
+    const spacing = 40; // distance between dots (grid size)
+    const dotSize = 4;  // base dot size
+    const amplitude = 12;
 
-    for (let i = 0; i < starCount; i++) {
-      const star = document.createElement("div");
-      star.className = "star";
+    const cols = Math.ceil(window.innerWidth / spacing);
+    const rows = Math.ceil(window.innerHeight / spacing);
 
-      // Uniform placement
-      star.style.left = Math.random() * 100 + "%";
-      star.style.top = Math.random() * 100 + "%";
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const dot = document.createElement("div");
+        dot.className = "star";
 
-      // Larger star size
-      const size = Math.random() * 2.5 + 2.8; // ~3px – 5.3px
-      star.style.width = size + "px";
-      star.style.height = size + "px";
+        // Uniform grid placement
+        dot.style.left = col * spacing + "px";
+        dot.style.top = row * spacing + "px";
 
-      // Increased floating movement
-      const xMove = (Math.random() * 4 + 4) * (Math.random() < 0.5 ? -1 : 1);
-      const yMove = (Math.random() * 4 + 4) * (Math.random() < 0.5 ? -1 : 1);
+        // Slight size variation (still uniform looking)
+        const size = dotSize + Math.random() * 1.5;
+        dot.style.width = size + "px";
+        dot.style.height = size + "px";
 
-      star.style.setProperty("--x-move", xMove + "px");
-      star.style.setProperty("--y-move", yMove + "px");
+        // Alternate row direction
+        const duration = Math.random() * 4 + 4; // 4–8s
+        const delay = Math.random() * 3;
 
-      // Faster animation
-      star.style.animationDuration = Math.random() * 3 + 3 + "s"; // 3–6s
-      star.style.animationDelay = Math.random() * 5 + "s";
+        if (row % 2 === 0) {
+          dot.style.animation = `moveDown ${duration}s linear infinite`;
+        } else {
+          dot.style.animation = `moveUp ${duration}s linear infinite`;
+        }
 
-      starfield.appendChild(star);
+        dot.style.animationDelay = `${delay}s`;
+
+        container.appendChild(dot);
+      }
     }
   </script>
 
